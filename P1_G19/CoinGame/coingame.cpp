@@ -4,26 +4,34 @@
 #include <ctime>
 #include "Input.h"
 
-enum class dificultad { _EASY = 1, _MEDIUM = 2, _HARDCORE = 3, _SATAN = 4, _MAX = 5 };
+bool stop=false;//booleano global que permite cerrar la partida si pulsamos esc
 
-class player; //la defino aqui porque sino en coin manager no la detectara ya que esta hecha antes
+//enum class de la dificultad. Le damos a cada dificultad un valor integer para así, más adelante, poder usarla
+//para calcular el tamaño del mapa, la cantidad de monedas a recoger y la cantidad de monedas que aparece
+enum class dificultad { _EASY = 1, _MEDIUM = 2, _HARDCORE = 3, _MAX = 4 };
 
+
+//clase mapa
 class mapa
 {
 private:
-
+	//miembros privados fil y col para almacenar la cantidad de filas y columnas que tiene el mapa creado aleatoriamente
 	int fil;
 	int col;
-
+	//doble puntero de tipo char que nos permite usar un array 2D dinámica
 	char **mapusa;
 
 public:
 
 	mapa(dificultad w)
 	{
+		//mediante el uso de static_cast convertimos la dificultad en integer y calculamos una cantidad aleatoria 
+		//de filas y columnas.
 		fil = (5 * static_cast<int>(w)) + rand() % ((5 * 2 * static_cast<int>(w)) - (5 * static_cast<int>(w)));
 		col = (5 * static_cast<int>(w)) + rand() % ((5 * 2 * static_cast<int>(w)) - (5 * static_cast<int>(w)));
 		
+
+		//aquí creamos la array dinámica 2D
 		mapusa = new char *[fil];
 
 		for (int i = 0; i < fil; i++)
@@ -48,12 +56,10 @@ public:
 	}
 
 	void printMap() {
-		for (int i = 0; i < fil; i++) {
-			for (int j = 0; j < col; j++) {
-				if (j != col - 1)
-					std::cout << mapusa[i][j];
-				else
-					std::cout << mapusa[i][j] << std::endl;
+		for (int i = 0; i < col; i++) {
+			std::cout << std::endl;
+			for (int j = 0; j < fil; j++) {
+					std::cout << mapusa[j][i];
 			}
 		}
 	}
@@ -72,14 +78,14 @@ public:
 class CoinManager
 {
 private:
-
+	//mimebros para mantener seguimiento de la cantidad de monedas en el mapa y poder acceder, desde dentro
+	//de la clase coinmanager a los atributos de mapusa.
 	int cantidadMonedas;
 	mapa &mapusa;
 
 public:
 
-	CoinManager(mapa &map) :mapusa(map) //pasamos el mapa por referencia y guardamos esa referencai en mapusa, 
-										//asi si necesitamos tocar el mapa en otra funcion usamos mapusa
+	CoinManager(mapa &map) :mapusa(map)
 	{
 		cantidadMonedas = static_cast<float>(map.getFil())*static_cast<float>(map.getCol())*((static_cast<float>(rand() % 10 + 3)) / 100);
 
@@ -114,6 +120,7 @@ public:
 	}
 
 	void setMonedas(int x, int y, int &punt);
+	//forward declaration ya que usamos atributos de player que aun no han sido definidos
 
 };
 
@@ -125,16 +132,19 @@ private:
 	int y;
 	char icono = '@';
 	char tecla;
-	mapa &mapusa;
-	CoinManager &controlaso;
+	mapa &mapusa; //al igual que con el coinmanager, cargamos el mapa en referencia, y en este caso
+	CoinManager &controlaso; // también cargamos el coinmanager
 
 public:
 
-	int score;
+	int score;  //hemos definido score como public ya que lo hemos considerado como un dato de dominio global
+	// dentro de lo que es una partida.
 
 	player(mapa &map, CoinManager &control):mapusa(map),controlaso(control) {
+		//el constructor recorre el mapa situandose en posiciones aleatorias hasta encontrar una en la que no hay 
+		//monedas. Cuando lo hace, coloca allí al player y deja de ejecutar el doble bucle. También inicializa score en 0.
 		score = 0;
-		bool located = false;
+		bool located = false; 
 		for (int i=rand()%map.getFil(); i < map.getFil() && !located; i++) {
 
 			for (int j=rand()%map.getCol(); j < map.getCol() && !located; j++){
@@ -152,36 +162,39 @@ public:
 	void Movimiento(Input::Key tecla)
 	{
 		switch (tecla) {
-			case Input::Key::W: setX(x - 1);
+			case Input::Key::W: setY(y - 1);
 				break;
-			case Input::Key::A: setY(y - 1);
+			case Input::Key::A: setX(x - 1);
 				break;
-			case Input::Key::S: setX(x + 1);
+			case Input::Key::S: setY(y + 1);
 				break;
-			case Input::Key::D: setY(y + 1);
+			case Input::Key::D: setX(x + 1);
 				break;
 			case Input::Key::ENTER:
 				break;
-			case Input::Key::ESC:
+			case Input::Key::ESC: stop = true;
 				break;
 			case Input::Key::NONE:
 				break;
 		}
 	}
 
-	void setX(int a) {
+	//Usamos setters para que el jugador cambie su posición para así asegurarnos de que si este intenta acceder
+	//a una posición fuera del mapa, poder impedirselo
+
+	void setY(int a) {
 		if (a >= 0 && a < mapusa.getCol()){
 			mapusa.CambiarCelda(x, y, '.');
-			x = a;
+			y = a;
 			controlaso.setMonedas(x, y, score);
 			mapusa.CambiarCelda(x, y, icono);
 			}
 	}
 
-	void setY(int a) {
+	void setX(int a) {
 		if (a >= 0 && a < mapusa.getFil()) {
 			mapusa.CambiarCelda(x, y, '.');
-			y = a;
+			x = a;
 			controlaso.setMonedas(x, y, score);
 			mapusa.CambiarCelda(x, y, icono);
 		}
@@ -228,8 +241,6 @@ void PLAY() {
 
 
 	int coinstoWin = (static_cast<int>(a) * 30) + rand() % ((static_cast<int>(a) * 30 * 2) - (static_cast<int>(a) * 30));
-	std::cout << "Deberas coleccionar u total de " << coinstoWin << " monedas para ganar. BUENA SUERTE!" << std::endl;
-	std::cout << "pulsa ENTER para empezar a jugar" << std::endl;
 
 	Input::Key tecla;
 
@@ -242,13 +253,20 @@ void PLAY() {
 			map->printMap();
 			std::cout << "\n PUNTUACION: " << PJ->score << "/" << coinstoWin;
 			system("cls");
-		} while (PJ->score!=coinstoWin);
-		std::cout << "Enhorabuena!!! Has recolectado todas las monedas en: " << clock() << " segundos." << std::endl;
-		std::cin;
+		} while (PJ->score!=coinstoWin && !stop); //la partida se ejecutará hasta que el jugador obtenga
+		//todas las monedas o pulse el botón ESC
+
+		//si acaba la partida pulsando ESC, no se mostrará por pantalla la felicitación ni el tiempo que ha tardado
+		//en acabar
+		if (!stop) { 
+			std::cout << "Enhorabuena!!! Has recolectado todas las monedas en: " << clock() << " milisegundos." << std::endl;
+			int z;
+			std::cin >> z;
+		}
 }
 
 void main() {
-	srand(time(nullptr));
+	srand(time(nullptr)); //seed aleatoria
 	PLAY();
 }
 
