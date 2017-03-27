@@ -1,6 +1,6 @@
 ﻿  coingame.cpp
-c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(84): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(99): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(251): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(90): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(105): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\alex\source\repos\cpp_balas_goms\p1_g19\coingame\coingame.cpp(266): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   CoinGame.vcxproj -> C:\Users\Alex\Source\Repos\Cpp_Balas_Goms\P1_G19\Debug\CoinGame.exe
   CoinGame.vcxproj -> C:\Users\Alex\Source\Repos\Cpp_Balas_Goms\P1_G19\Debug\CoinGame.pdb (Full PDB)
