@@ -103,9 +103,17 @@ void IntroduccionComandos() //esta a medias, la ire haciendo a medida que tengam
 
 		add(a);
 	}
+
 	if (comandoJugador == "add basics " || comandoJugador == "addbasics")
 	{
 		addBasics();
+	}
+
+	if (comandoJugador == "delete")
+	{
+		std::cin >> a;
+
+		BorrarElement(a);
 	}
 }
 
@@ -121,4 +129,9 @@ void addBasics()
 		std::cout << elements_basics[i];
 	}
 
+}
+
+void BorrarElement(int numero)
+{
+	currentList.erase(currentList[numero]);
 }
