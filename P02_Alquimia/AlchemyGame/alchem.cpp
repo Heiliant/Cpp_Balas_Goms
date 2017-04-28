@@ -89,3 +89,36 @@ void main()
 	
 	//es
 }
+
+void IntroduccionComandos() //esta a medias, la ire haciendo a medida que tengamos las funciones
+{
+	int a;
+	int b;
+
+	std::cin >> comandoJugador;
+
+	if (comandoJugador == "add")
+	{
+		std::cin >> a;
+
+		add(a);
+	}
+	if (comandoJugador == "add basics " || comandoJugador == "addbasics")
+	{
+		addBasics();
+	}
+}
+
+void add(int numero) //duplica un elemento de la lista
+{
+	currentList.push_back(currentList[numero]);
+}
+
+void addBasics()
+{
+	for (int i = 0; i < elements_basics.size(); i++)
+	{
+		std::cout << elements_basics[i];
+	}
+
+}
