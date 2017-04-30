@@ -1,8 +1,9 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <fstream>
 #include <unordered_map>
 #include <vector>
+#include <windows.h>
 
 enum class status
 {
@@ -40,18 +41,18 @@ void main()
 	}
 
 
-	for (std::string e : formulas) //recorrer� el vector formulas y en cada iteracion e ser� la string de esa posicion
+	for (std::string e : formulas) //recorrerá el vector formulas y en cada iteracion e será la string de esa posicion
 	{
 		for (char i : e) //recorrera la string e y en cada iteracion i sera una letra de esta
 		{
 			switch (i) { //mientras recorro la string, los chars pueden valer '=', '+' o una letra cualquiera.
 			case ('='):
-				componente = status::_Clave1; //si he le�do un igual, se que estoy empezando a leer la key1, as� que actualizo el 
-												//status a _Clave1. Como lo primero que hay en la l�nea siempre es el value, el 
+				componente = status::_Clave1; //si he leído un igual, se que estoy empezando a leer la key1, así que actualizo el 
+												//status a _Clave1. Como lo primero que hay en la línea siempre es el value, el 
 												//valor de status es _Value por defecto.
 				break;
 			case('+'):
-				componente = status::_Clave2; //si he le�do el '+', lo mismo que antes pero a _Clave2
+				componente = status::_Clave2; //si he leído el '+', lo mismo que antes pero a _Clave2
 				break;
 			default:
 				switch (componente) {  //dependiendo del valor de status guardo los chars en un container distinto
@@ -67,8 +68,8 @@ void main()
 				}
 				break;
 			}
-		} //una vez se acaba el foreach y he le�do todos los chars de la l�nea, actualizo el status para que en la siguiente
-		//iteraci�n vuelva a guardar los chars en el container "content" hasta que se encuentr el '='
+		} //una vez se acaba el foreach y he leído todos los chars de la línea, actualizo el status para que en la siguiente
+		//iteración vuelva a guardar los chars en el container "content" hasta que se encuentr el '='
 		componente = status::_Value;
 		//Meto el pair con el pair de strings (keys) y el string (value)
 		MapaFormulas.insert(std::pair <std::pair <std::string, std::string>, std::string>(std::pair <std::string, std::string>(key, key2), content));
@@ -100,20 +101,40 @@ void IntroduccionComandos() //esta a medias, la ire haciendo a medida que tengam
 	if (comandoJugador == "add")
 	{
 		std::cin >> a;
-
+		std::cin.clear();
 		add(a);
 	}
 
-	if (comandoJugador == "add basics " || comandoJugador == "addbasics")
+	if (comandoJugador == "add basics " || comandoJugador == "addbasics" || comandoJugador == "Add basics")
 	{
 		addBasics();
 	}
 
-	if (comandoJugador == "delete")
+	if (comandoJugador == "delete" || comandoJugador == "Delete")
+	{
+		std::cin >> a;
+		std::cin.clear();
+		BorrarElement(a);
+	}
+
+	if (comandoJugador == "info")
 	{
 		std::cin >> a;
 
-		BorrarElement(a);
+		if (a >= 0 && a <= currentList.size())
+		{
+			informasao(a);
+		}
+	}
+
+	if (comandoJugador=="clean" || comandoJugador == "Clean")
+	{
+		clean(currentList);
+	}
+
+	if (comandoJugador == "help" || comandoJugador == "Help")
+	{
+		Tutorial();
 	}
 }
 
@@ -134,4 +155,49 @@ void addBasics()
 void BorrarElement(int numero)
 {
 	currentList.erase(currentList[numero]);
+}
+
+void informasao(int indice) 
+{
+	std::string concatenacion = currentList[indice];
+
+	ShellExecute(NULL, "open", "https://en.wikipedia.org/wiki/"+concatenacion, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void clean(std::vector<std::string>hola)
+{
+	std::string repetidor = hola[0];
+
+	for (int i=0;i<hola.size();i++)
+	{
+		if (hola[i] == repetidor)
+		{
+			hola.erase(hola[i]);
+		}
+	}
+}
+
+void Tutorial()
+{
+	std::cout << "El jugador empieza con los 4 elementos básicos: aire​, fuego​, tierra ​y agua​" << std::endl;
+	std::cout << "Cuando se combinan 2 elementos y estos producen un resultado, se suma 1 a la	puntuación " << std::endl;
+	std::cout << "si el nuevo elemento no se encuentra en la lista de elementos del jugador." << std::endl;
+	std::cout<< "No se pueden combinar 2 elementos que ocupen la misma posición en la lista.​" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “add​” y el número de un elemento disponible en la lista, se añade una copia del elemento al que hace referencia dentro de la lista.​" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “add basics​” se añaden nuevas instancias de los 4 elementos básicos dentro de la lista de elementos.​" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “delete​” y el número de un elemento disponible en la lista, se elimina el elemento al que hace referencia.​" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “info​” y el número de un elemento disponible en la lista, se abre en el navegador la página de Wikipedia(u otra enciclopedia)" << std::endl;
+	std::cout<<"con la información acerca del elemento.​" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “sort​” se ordenan todos los elementos por orden alfabético." << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “clean​” se eliminan todos los elementos que estén repetidos en la lista." << std::endl;
+	std::cout << std::endl;
+	std::cout << "Si el jugador escribe “help​” se muestra un tutorial con todas las acciones previamente mencionadas que puede realizar el jugador durante la partida." << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 }
