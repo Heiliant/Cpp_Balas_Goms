@@ -1,0 +1,43 @@
+﻿  alchem.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xstddef(377): error C2338: The C++ Standard doesn't provide a hash for this type.
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\type_traits(421): note: see reference to class template instantiation 'std::hash<_Kty>' being compiled
+          with
+          [
+              _Kty=std::pair<std::string,std::string>
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(265): note: see reference to class template instantiation 'std::is_empty<_Ty1>' being compiled
+          with
+          [
+              _Ty1=std::hash<std::pair<std::string,std::string>>
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\unordered_map(23): note: see reference to class template instantiation 'std::_Uhash_compare<_Kty,_Hasher,_Keyeq>' being compiled
+          with
+          [
+              _Kty=std::pair<std::string,std::string>,
+              _Hasher=std::hash<std::pair<std::string,std::string>>,
+              _Keyeq=std::equal_to<std::pair<std::string,std::string>>
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\xhash(152): note: see reference to class template instantiation 'std::_Umap_traits<_Kty,_Ty,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>' being compiled
+          with
+          [
+              _Kty=std::pair<std::string,std::string>,
+              _Ty=std::string,
+              _Hasher=std::hash<std::pair<std::string,std::string>>,
+              _Keyeq=std::equal_to<std::pair<std::string,std::string>>,
+              _Alloc=std::allocator<std::pair<const std::pair<std::string,std::string>,std::string>>
+          ]
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\unordered_map(86): note: see reference to class template instantiation 'std::_Hash<std::_Umap_traits<_Kty,_Ty,std::_Uhash_compare<_Kty,_Hasher,_Keyeq>,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=std::pair<std::string,std::string>,
+              _Ty=std::string,
+              _Hasher=std::hash<std::pair<std::string,std::string>>,
+              _Keyeq=std::equal_to<std::pair<std::string,std::string>>,
+              _Alloc=std::allocator<std::pair<const std::pair<std::string,std::string>,std::string>>
+          ]
+  c:\users\alex\documents\github\alquimia\alquimia2015\gomsbalas2015\alchem.cpp(28): note: see reference to class template instantiation 'std::unordered_map<std::pair<std::string,std::string>,std::string,std::hash<_Kty>,std::equal_to<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>' being compiled
+          with
+          [
+              _Kty=std::pair<std::string,std::string>,
+              _Ty=std::string
+          ]
